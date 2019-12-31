@@ -118,7 +118,7 @@ app.delete('/usuario/:id', function (req, res) {
         
         
 
-    })
+    }) 
     // Usuario.findByIdAndRemove(id,(err,usuarioBorrado) =>{
        
     //     if (err) {

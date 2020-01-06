@@ -1,7 +1,7 @@
 
 const express = require('express');
 const app = express();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario')
@@ -14,7 +14,7 @@ app.get('/usuario', function (req, res) {
     let  limite = req.query.limite || 5; 
     limite = Number(limite);
 
-    Usuario.find({},'nombre email role estado google img')
+    Usuario.find({estado : true},'nombre email role estado google img')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -25,7 +25,7 @@ app.get('/usuario', function (req, res) {
             });
         }
 
-        Usuario.count({},(err,conteo)=>{
+        Usuario.countDocuments({estado:true},(err,conteo)=>{
             res.json({
                 ok: true,
                 cantidad:conteo, // usuarios.length
@@ -93,7 +93,7 @@ app.delete('/usuario/:id', function (req, res) {
     
     Usuario.findByIdAndUpdate(id,{
         estado:false
-    },(err,usuarioBorrado)=>{
+    },{new : true},(err,usuarioBorrado)=>{
        
         if (err) {
             return res.status(400).json({

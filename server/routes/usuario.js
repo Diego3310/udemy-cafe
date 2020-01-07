@@ -8,31 +8,31 @@ const Usuario = require('../models/usuario')
 
 
 app.get('/usuario', function (req, res) {
-    
-    let  desde  = req.query.desde || 0;
+
+    let desde = req.query.desde || 0;
     desde = Number(desde);
-    let  limite = req.query.limite || 5; 
+    let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({estado : true},'nombre email role estado google img')
+    Usuario.find({ estado: true }, 'nombre email role estado google img')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
 
-        Usuario.countDocuments({estado:true},(err,conteo)=>{
-            res.json({
-                ok: true,
-                cantidad:conteo, // usuarios.length
-                usuarios
+            Usuario.countDocuments({ estado: true }, (err, conteo) => {
+                res.json({
+                    ok: true,
+                    cantidad: conteo,
+                    usuarios
+                })
             })
-        })
-    });
+        });
 
 
 });
@@ -90,11 +90,11 @@ app.put('/usuario/:id', function (req, res) {
 
 app.delete('/usuario/:id', function (req, res) {
     let id = req.params.id;
-    
-    Usuario.findByIdAndUpdate(id,{
-        estado:false
-    },{new : true},(err,usuarioBorrado)=>{
-       
+
+    Usuario.findByIdAndUpdate(id, {
+        estado: false
+    }, { new: true }, (err, usuarioBorrado) => {
+
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -102,9 +102,9 @@ app.delete('/usuario/:id', function (req, res) {
             })
         }
 
-        if(!usuarioBorrado){
+        if (!usuarioBorrado) {
             return res.json({
-                ok:false,
+                ok: false,
                 error: {
                     message: 'Usuario no encontrado'
                 }
@@ -112,39 +112,11 @@ app.delete('/usuario/:id', function (req, res) {
         }
 
         res.json({
-            ok:true,
+            ok: true,
             usuario: usuarioBorrado
         })
-        
-        
 
-    }) 
-    // Usuario.findByIdAndRemove(id,(err,usuarioBorrado) =>{
-       
-    //     if (err) {
-    //         return res.status(400).json({
-    //             ok: false,
-    //             err
-    //         })
-    //     }
-
-
-    //     if(!usuarioBorrado){
-    //         return res.status(400).json({
-    //             ok: false,
-    //             error: {
-    //                 message:"Usuario no encontrado"
-    //             }
-    //         })
-    //     }
-
-    //     res.json({
-    //         ok:true,
-    //         usuario : usuarioBorrado
-    //     });
-    // })
-
-  
+    })
 
 });
 

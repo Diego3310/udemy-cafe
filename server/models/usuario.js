@@ -47,7 +47,7 @@ let usuarioSchema = new Schema({
 usuarioSchema.methods.toJson = function () {
     let user = this;
     let userObject = user.toObject();
-    delete userObject.password;    
+    delete userObject.password;
     return userObject;
 };
 
